@@ -2,24 +2,30 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/cli/go-gh/v2/pkg/api"
+	"github.com/cli/go-gh/v2/pkg/browser"
+	"github.com/cli/go-gh/v2/pkg/repository"
+	"log"
+	"os"
 )
 
 func main() {
-	fmt.Println("hi world, this is the gh-browse-compare extension!")
-	client, err := api.DefaultRESTClient()
-	if err != nil {
-		fmt.Println(err)
-		return
+	if len(os.Args) != 2 {
+		log.Fatal("error: need one argument.")
 	}
-	response := struct {Login string}{}
-	err = client.Get("user", &response)
+	// TODO: should validate arg to comply with https://github.com/mislav/hub/blob/master/commands/compare.go
+	arg := os.Args[1]
+
+	repo, err := repository.Current()
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatal(err)
 	}
-	fmt.Printf("running as %s\n", response.Login)
+	url := fmt.Sprintf("https://%s/%s/%s/compare/%s", repo.Host, repo.Owner, repo.Name, arg)
+
+	b := browser.New("", os.Stdout, os.Stderr)
+	err = b.Browse(url)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // For more examples of using go-gh, see:
