@@ -2,6 +2,14 @@
 
 A `gh` extension to aim to be a replacement of `hub compare`.
 
+## Installation
+
+```
+$ gh extension install kyanny/gh-browse-compare
+```
+
+## Usage
+
 ```
 $ gh browse-compare v1.0.0..main
 $ gh browse-compare v1.0.0...main
@@ -12,6 +20,8 @@ You may want to add an alias.
 ```
 $ gh alias set compare 'browse-compare'
 ```
+
+---
 
 This extension is an experimental implementation, so that it does not validate the command line argument and error handling is rough.
 
